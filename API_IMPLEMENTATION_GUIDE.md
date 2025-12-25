@@ -102,14 +102,16 @@ class MyCustomApiService implements FartService {
 
 ### 2. Update main.dart
 
-Replace the service instantiation in `lib/main.dart`:
+Replace the service instantiation in `lib/main.dart` using GetX controllers (the app does not use Provider):
 
 ```dart
+import 'package:get/get.dart';
+import 'providers/fart_provider.dart';
+import 'providers/locale_provider.dart';
+import 'services/my_custom_api_service.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  final localeProvider = LocaleProvider();
-  await localeProvider.initialize();
 
   // Use your custom API service
   final fartService = MyCustomApiService(
@@ -117,18 +119,11 @@ void main() async {
     authToken: 'your-auth-token-here',
   );
 
-  final fartProvider = FartProvider(fartService);
-  await fartProvider.initialize();
+  // Register controllers with GetX dependency injection
+  Get.put(LocaleController());
+  Get.put(FartController(fartService));
 
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider.value(value: localeProvider),
-        ChangeNotifierProvider.value(value: fartProvider),
-      ],
-      child: const MyApp(),
-    ),
-  );
+  runApp(const MyApp());
 }
 ```
 
