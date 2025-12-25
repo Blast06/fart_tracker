@@ -26,8 +26,8 @@ class MyApp extends StatelessWidget {
       title: 'Fart Hero',
       debugShowCheckedModeBanner: false,
       translations: AppTranslations(),
-      locale: const Locale('es', 'ES'),
-      fallbackLocale: const Locale('en', 'US'),
+      locale: Get.deviceLocale,
+      fallbackLocale: Get.deviceLocale,
       theme: ThemeData(
         useMaterial3: true,
         fontFamily: 'SF Pro Display',
